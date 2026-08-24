@@ -2,5 +2,9 @@ package main
 
 
 func main() {
-	GetCSVFiles()
+	// scrape data
+	// GetCSVFiles()
+
+	// insert the scraped data
+	insertCSVToDb()
 }
