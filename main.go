@@ -6,5 +6,5 @@ func main() {
 	// GetCSVFiles()
 
 	// insert the scraped data
-	insertCSVToDb()
+	readCSV()
 }
