@@ -47,6 +47,8 @@ type Match struct {
 	B365A float64 `csv:"B365A"`
 }
 
+// dates red (2002, 2003, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026)
+
 func readCSV() {
 	files, err := os.ReadDir("./CSVs")
 	if err != nil {
@@ -158,6 +160,73 @@ func atof(s string) float64 {
 }
 
 func parseDate(s string) time.Time {
-    t, _ := time.Parse("02/01/2006", s)
-    return t
+	if s == "" {
+		return time.Time{}
+	}
+
+	chunks := strings.Split(s, "/")
+	d := s
+
+	if len(chunks) == 3 {
+		switch chunks[2] {
+		case "00":
+			d = chunks[0] + "/" + chunks[1] + "/2000"
+		case "01":
+			d = chunks[0] + "/" + chunks[1] + "/2001"
+		case "02":
+			d = chunks[0] + "/" + chunks[1] + "/2002"
+		case "03":
+			d = chunks[0] + "/" + chunks[1] + "/2003"
+		case "04":
+			d = chunks[0] + "/" + chunks[1] + "/2004"
+		case "05":
+			d = chunks[0] + "/" + chunks[1] + "/2005"
+		case "06":
+			d = chunks[0] + "/" + chunks[1] + "/2006"
+		case "07":
+			d = chunks[0] + "/" + chunks[1] + "/2007"
+		case "08":
+			d = chunks[0] + "/" + chunks[1] + "/2008"
+		case "09":
+			d = chunks[0] + "/" + chunks[1] + "/2009"
+		case "10":
+			d = chunks[0] + "/" + chunks[1] + "/2010"
+		case "11":
+			d = chunks[0] + "/" + chunks[1] + "/2011"
+		case "12":
+			d = chunks[0] + "/" + chunks[1] + "/2012"
+		case "13":
+			d = chunks[0] + "/" + chunks[1] + "/2013"
+		case "14":
+			d = chunks[0] + "/" + chunks[1] + "/2014"
+		case "15":
+			d = chunks[0] + "/" + chunks[1] + "/2015"
+		case "16":
+			d = chunks[0] + "/" + chunks[1] + "/2016"
+		case "17":
+			d = chunks[0] + "/" + chunks[1] + "/2017"
+		case "18":
+			d = chunks[0] + "/" + chunks[1] + "/2018"
+		case "19":
+			d = chunks[0] + "/" + chunks[1] + "/2019"
+		case "20":
+			d = chunks[0] + "/" + chunks[1] + "/2020"
+		case "21":
+			d = chunks[0] + "/" + chunks[1] + "/2021"
+		case "22":
+			d = chunks[0] + "/" + chunks[1] + "/2022"
+		case "23":
+			d = chunks[0] + "/" + chunks[1] + "/2023"
+		case "24":
+			d = chunks[0] + "/" + chunks[1] + "/2024"
+		case "25":
+			d = chunks[0] + "/" + chunks[1] + "/2025"
+		case "26":
+			d = chunks[0] + "/" + chunks[1] + "/2026"
+		}
+	}
+
+	t, _ := time.Parse("02/01/2006", d)
+	return t
 }
+
