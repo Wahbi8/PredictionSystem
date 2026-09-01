@@ -8,6 +8,7 @@ import (
 	"log"
 	"strings"
 	"strconv"
+	"fmt"
 )
 
 type TeamsD struct{
@@ -32,7 +33,8 @@ func readTeamsFromCsv() {
 	}
 
 	for _, file := range files {
-		if file.IsDir() || filepath.Ext(file.Name()) != "./csv" {
+		fmt.Println("looking for files")
+		if file.IsDir() || filepath.Ext(file.Name()) != ".csv" {
 			continue
 		}
 		
@@ -44,31 +46,37 @@ func readTeamsFromCsv() {
 		}
 
 		reader := csv.NewReader(f)
+		
+		// ---> THE MAGIC FIX IS HERE <---
+		reader.Comma = ';' 
+		
 		reader.FieldsPerRecord = -1
-		_, err = reader.Read() 
+		reader.LazyQuotes = true
+
+		// Skip header
+		_, err = reader.Read()
 		if err != nil {
 			log.Fatal(err)
 		}
 
 		teamd := []TeamsD{}
 
+		// --- ROW READING LOOP ---
 		for {
 			record, err := reader.Read()
 			if err == io.EOF {
-				break
+				break // End of file reached
 			}
 			if err != nil {
 				log.Fatal(err)
 			}
 
-			if len(record) < 26 {
+			if len(record) < 12 {
 				continue
 			}
 
 			for i := range record {
-				// Replace Windows non-breaking space (0xa0) with a normal space
 				record[i] = strings.ReplaceAll(record[i], "\xa0", " ")
-				// Strip out any other invalid UTF-8 characters just to be safe
 				record[i] = strings.ToValidUTF8(record[i], "")
 			}
 
@@ -97,10 +105,20 @@ func readTeamsFromCsv() {
 				XPTS:    xpts,
 				season:  strings.TrimSuffix(file.Name(), filepath.Ext(file.Name())),
 			})
-			f.Close() 
-
-			InsertTeamsData(teamd)
-
 		}
+		// --- END OF ROW READING LOOP ---
+
+		f.Close() 
+
+		// Now teamd will actually have 20 teams in it!
+		InsertTeamsData(teamd, file.Name())
+
+		newPath := filepath.Join("processedTeamCSV", file.Name())
+		err = os.Rename(path, newPath)
+		if err != nil {
+			log.Fatalf("Failed to move file: %v", err)
+		}
+		
+		fmt.Printf("Processed and moved file: %v\n", file.Name())
 	}
 }
