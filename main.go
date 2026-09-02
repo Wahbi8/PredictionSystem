@@ -2,7 +2,7 @@ package main
 
 import (
 	// "strconv"
-	"fmt"
+	// "fmt"
 )
 
 func main() {
@@ -29,8 +29,10 @@ func main() {
 
 
 	// insert teams&seasons
-	fmt.Println("started")
-	readTeamsFromCsv()
+	// fmt.Println("started")
+	// readTeamsFromCsv()
 
 
+	// get teams stats
+	getTeamStats()
 }
