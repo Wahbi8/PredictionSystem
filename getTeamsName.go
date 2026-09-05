@@ -23,7 +23,9 @@ func getTeamsName() []string {
 	}
 	defer conn.Close(ctx)
 
-	query := `SELECT DISTINCT team_name FROM teams_season_data`
+	query := `SELECT DISTINCT team_name
+		FROM teams_season_data
+		WHERE season = '2018'`
 
 	rows, err := conn.Query(ctx, query)
 	if err != nil {

@@ -39,7 +39,7 @@ func getTeamStats() {
 	}
 
 	wd, _ := os.Getwd()
-	downloadDir := filepath.Join(wd, "teamsStats")
+	downloadDir := filepath.Join(wd, "teamsStats2018")
 	os.MkdirAll(downloadDir, 0755)
 
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
@@ -51,7 +51,7 @@ func getTeamStats() {
 	for _, team := range teams {
 		func(currentTeam string) { 
 			fmt.Printf("\n--- Processing team: %s ---\n", currentTeam)
-			targetURL := "https://understat.com/team/" + currentTeam + "/2025" 
+			targetURL := "https://understat.com/team/" + currentTeam + "/2018" 
 
 			ctx, cancelTab := chromedp.NewContext(allocCtx, chromedp.WithLogf(log.Printf))
 			defer cancelTab()
@@ -134,7 +134,7 @@ func getTeamStats() {
 					oldFilePath := filepath.Join(downloadDir, guid)
 					
 					// Name the file dynamically: e.g., "Arsenal_Situation_2024.csv"
-					newFileName := fmt.Sprintf("%s_%s_2025.csv", currentTeam, category)
+					newFileName := fmt.Sprintf("%s_%s_2018.csv", currentTeam, category)
 					newFilePath := filepath.Join(downloadDir, newFileName) 
 
 					if _, err := os.Stat(oldFilePath); err == nil {
