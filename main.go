@@ -34,5 +34,9 @@ func main() {
 
 
 	// get teams stats
-	getTeamStats()
+	// getTeamStats()
+
+
+	//insert palyers data
+	readTeamsStats()
 }
