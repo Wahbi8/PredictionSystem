@@ -32,7 +32,7 @@ type TeamStats struct {
 }
 
 func readTeamsStats() {
-	files, err := os.ReadDir("teamsStats")
+	files, err := os.ReadDir("TeamsStats2018")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -45,7 +45,7 @@ func readTeamsStats() {
 			continue
 		}
 
-		path := filepath.Join("./teamsStats", file.Name())
+		path := filepath.Join("./TeamsStats2018", file.Name())
 
 		f, err := os.Open(path)
 		if err != nil {
@@ -85,6 +85,7 @@ func readTeamsStats() {
 			stat := TeamStats{
 				ID:        parseID(record[0]),
 				Statistic: record[1],
+				TeamName: s[0],
 			}
 
 			offset := 0
@@ -95,6 +96,7 @@ func readTeamsStats() {
 				stat.Min = parseInt(record[2])
 				stat.XG90 = parseFloat(record[10])
 				stat.XGA90 = parseFloat(record[11])
+				
 
 			case "Attack speed", "Result", "Shot zones", "Situation", "Timing":
 				offset = 0
@@ -116,15 +118,17 @@ func readTeamsStats() {
 
 		f.Close() 
 
-		// db insert func to be added
-
-		// newPath := filepath.Join("processedTeamStats", file.Name())
-		// err = os.Rename(path, newPath)
-		// if err != nil {
-		// 	log.Fatalf("Failed to move file: %v", err)
-		// }
 		
-		// fmt.Printf("Processed and moved file: %v\n", file.Name())
+		// db insert func to be added
+		insertTeamStats(s[1], s[2], stats)
+
+		newPath := filepath.Join("processedTeamStatsafter25", file.Name())
+		err = os.Rename(path, newPath)
+		if err != nil {
+			log.Fatalf("Failed to move file: %v", err)
+		}
+		
+		fmt.Printf("Processed and moved file: %v\n", file.Name())
 
 		fmt.Printf("%s: %d stats\n", file.Name(), len(stats))
 	}
